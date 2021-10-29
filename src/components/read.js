@@ -17,6 +17,23 @@ const Read = () => {
             console.log(err);
         })
     }
+
+    const updateArticle = (data) => {
+        let { _id, title,  description, author} = data;
+        localStorage.setItem('ID', _id);
+        localStorage.setItem('Title', title);
+        localStorage.setItem('Description', description);
+        localStorage.setItem('Author', author);
+    }
+
+    const deleteArticle = (id) => {
+        axios.delete(`http://localhost:9000/articles/${id}`).then((response) => {
+            console.log(response.data);
+            getArticles();
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
     return(
         <div>
             <Table singleLine>
@@ -39,11 +56,11 @@ const Read = () => {
                                 <Table.Cell>{data.author}</Table.Cell>
                                 <Link to='/update'>
                                     <Table.Cell>
-                                        <Button>Edit</Button>
+                                        <Button onClick={() => updateArticle(data)}>Edit</Button>
                                     </Table.Cell>
                                 </Link>
                                 <Table.Cell>
-                                    <Button>Delete</Button>
+                                    <Button onClick={() => deleteArticle(data._id)}>Delete</Button>
                                 </Table.Cell>
                             </Table.Row>
                         )
